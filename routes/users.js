@@ -17,10 +17,10 @@ users.post("/login", async(req, res, next) => {
             return res.status(200).json({ code: 200, message: token});
         }
         else{
-            return res.status(404).json({ code: 404, message: "Usuario y/o contrasena incorrectos"});
+            return res.status(201).json({ code: 401, message: "Usuario y/o contrasena incorrectos"});
         }
     }
-    return res.status(404).json({ code: 404, message: "Campos incompletos"});
+    return res.status(200).json({ code: 404, message: "Campos incompletos"});
 });
 
 module.exports = users;
