@@ -15,7 +15,7 @@ app.mount('#gestion');
 
 var headers = {};
 var url = 'http://localhost:3000';
-var datosBD = 7;
+var datosBD = 6;
 var tamanoBusqueda = 0;
 
 function init() {
