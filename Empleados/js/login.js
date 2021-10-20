@@ -1,32 +1,46 @@
 window.onload = init;
 
-function init(){
-    document.querySelector('.btn-primary').addEventListener('click', login);
-}
-
-function login() {
-    var user = document.getElementById('input-mail').value;
-    var pass = document.getElementById('input-password').value;
-
-    console.log(user,pass);
-
-    axios({
-        method: 'post',
-        url: 'http://localhost:3000/users/login',
-        data: {
-            user: user,
-            password: pass
+const app = Vue.createApp({
+    data() {
+        return {
+            token: localStorage.getItem("token"),
+            email: '',
+            password: '',
+            response: ''
+        };
+    },
+    methods: {
+        getData() {
+            if (this.email != '' && this.password != '') {
+                console.log(this.email + " -. " + this.password);
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3000/users/login',
+                    data: {
+                        user: this.email,
+                        password: this.password
+                    }
+                }).then(function(res) {
+                    if (res.data.code === 200) {
+                        localStorage.setItem("token", res.data.message);
+                        window.location.href = "pagina-principal.html";
+                    } else {
+                        this.response = res.data.message;
+                        alert(this.response);
+                    }
+                }).catch(function(err) {
+                    console.log(err);
+                })
+            }
         }
-    }).then(function(res) {
-        console.log(res.data);
-        if(res.data.code === 200){
-            localStorage.setItem("token", res.data.message);
-            window.location.href = "empleados.html";
-        }
-        else{
-            alert("Usuario y/o contrasena incorrectos");
-        }
-    }).catch(function(err){
-        console.log(err);
-    })
+    }
+});
+
+app.mount('#information-user');
+
+
+function init() {
+    if (localStorage.getItem("token")) {
+        window.location.href = "pagina-principal.html";
+    }
 }
